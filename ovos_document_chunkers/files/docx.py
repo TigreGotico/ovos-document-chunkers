@@ -102,7 +102,9 @@ def parse_docx(path: str,
         Iterable[str]: An iterable of cleaned text chunks extracted from the DOC.
     """
     if path.startswith("http"):
-        path = requests.get(path).text
+        response = requests.get(path)
+        response.raise_for_status()  # Raise an error for bad status codes
+        path = response.text
     import textract
 
     # Default values for bad_words and stop_words
