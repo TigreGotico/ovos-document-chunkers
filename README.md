@@ -91,3 +91,35 @@ print("\nParagraphs:")
 for paragraph in paragraphs:
     print(paragraph)
 ```
+
+### Example using HTMLSentenceSplitter
+
+```python
+from ovos_document_chunkers import HTMLSentenceSplitter
+import requests
+
+html_text = requests.get("https://www.gofundme.com/f/openvoiceos").text
+
+sentence_splitter = HTMLSentenceSplitter()
+sentences = sentence_splitter.chunk(html_text)
+
+print("Sentences:")
+for sentence in sentences:
+    print(sentence)
+```
+
+### Example using HTMLParagraphSplitter
+
+```python
+from ovos_document_chunkers import HTMLParagraphSplitter
+import requests
+
+html_text = requests.get("https://www.gofundme.com/f/openvoiceos").text
+
+paragraph_splitter = HTMLParagraphSplitter()
+paragraphs = paragraph_splitter.chunk(html_text)
+
+print("\nParagraphs:")
+for paragraph in paragraphs:
+    print(paragraph)
+```
