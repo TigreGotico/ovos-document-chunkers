@@ -88,14 +88,18 @@ for sentence in sentences:
 
 ### Supported File Formats
 
-| Type     | Description                                       | Class Name                | Expected Input                 | File Extension |
-|----------|---------------------------------------------------|---------------------------|--------------------------------|----------------|
-| Markdown | Splits Markdown text into sentences or paragraphs | MarkdownSentenceSplitter  | String (Markdown text)         | .md            |
-|          |                                                   | MarkdownParagraphSplitter | String (Markdown text)         | .md            |
-| HTML     | Splits HTML text into sentences or paragraphs     | HTMLSentenceSplitter      | String (HTML text)             | .html, .htm    |
-|          |                                                   | HTMLParagraphSplitter     | String (HTML text)             | .html, .htm    |
-| PDF      | Splits PDF documents into sentences or paragraphs | PDFSentenceSplitter       | String (File path to PDF file) | .pdf           |
-|          |                                                   | PDFParagraphSplitter      | String (File path to PDF file) | .pdf           |
+| Type     | Description                                                  | Class Name                | Expected Input                  | File Extension |
+|----------|--------------------------------------------------------------|---------------------------|---------------------------------|----------------|
+| Markdown | Splits Markdown text into sentences or paragraphs            | MarkdownSentenceSplitter  | String (Markdown text)          | .md            |
+|          |                                                              | MarkdownParagraphSplitter | String (Markdown text)          | .md            |
+| HTML     | Splits HTML text into sentences or paragraphs                | HTMLSentenceSplitter      | String (HTML text)              | .html, .htm    |
+|          |                                                              | HTMLParagraphSplitter     | String (HTML text)              | .html, .htm    |
+| PDF      | Splits PDF documents into sentences or paragraphs            | PDFSentenceSplitter       | String (File path to PDF file)  | .pdf           |
+|          |                                                              | PDFParagraphSplitter      | String (File path to PDF file)  | .pdf           |
+| doc      | Splits Microsoft doc documents into sentences or paragraphs  | DOCSentenceSplitter       | String (File path to doc file)  | .doc           |
+|          |                                                              | DOCParagraphSplitter      | String (File path to doc file)  | .doc           |
+| docx     | Splits Microsoft docx documents into sentences or paragraphs | DOCxSentenceSplitter      | String (File path to docx file) | .docx          |
+|          |                                                              | DOCxParagraphSplitter     | String (File path to docx file) | .docx          |
 
 
 ### Usage

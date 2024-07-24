@@ -4,7 +4,9 @@ from ovos_document_chunkers.text import (SaTSentenceSplitter, SaTParagraphSplitt
                                          PySBDSentenceSplitter,
                                          MarkdownSentenceSplitter, MarkdownParagraphSplitter,
                                          HTMLSentenceSplitter, HTMLParagraphSplitter,
-                                         PDFSentenceSplitter, PDFParagraphSplitter)
+                                         PDFSentenceSplitter, PDFParagraphSplitter,
+                                         DOCSentenceSplitter, DOCParagraphSplitter,
+                                         DOCxSentenceSplitter, DOCxParagraphSplitter)
 
 
 __all__ = [
@@ -20,6 +22,10 @@ __all__ = [
     "HTMLSentenceSplitter",
     "HTMLParagraphSplitter",
     "PDFSentenceSplitter",
-    "PDFParagraphSplitter"
+    "PDFParagraphSplitter",
+    "DOCSentenceSplitter",
+    "DOCParagraphSplitter",
+    "DOCxSentenceSplitter",
+    "DOCxParagraphSplitter"
 ]
 
