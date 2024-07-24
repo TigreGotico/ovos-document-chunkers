@@ -20,6 +20,6 @@ __all__ = [
     "HTMLSentenceSplitter",
     "HTMLParagraphSplitter",
     "PDFSentenceSplitter",
-    "PDFParagraphSplitter"f
+    "PDFParagraphSplitter"
 ]
 
