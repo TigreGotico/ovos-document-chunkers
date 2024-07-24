@@ -32,7 +32,7 @@ class PDFSentenceSplitter(AbstractTextDocumentChunker):
             data (str): The PDF text to split.
 
         Returns:
-            Iterable[str]: An iterable of sentences.
+            Iterable[str]: An iterable of sentences that are derived from the PDF text.
         """
         for chunk in self.splitter.chunk(data):
             for p in chunk.split("\n"):
@@ -67,19 +67,38 @@ class PDFParagraphSplitter(AbstractTextDocumentChunker):
 
         Args:
             data (str): The PDF text to split.
-            include_title (bool): Whether to include the title in the paragraphs. Defaults to True.
 
         Returns:
-            Iterable[str]: An iterable of paragraphs.
+            Iterable[str]: An iterable of paragraphs extracted from the PDF text.
         """
         for chunk in parse_pdf(data):
             yield chunk
 
 
-def parse_pdf(path,
+def parse_pdf(path: str,
               bad_words: Optional[List[str]] = None,
               stop_words: Optional[List[str]] = None,
               min_words: int = 5) -> Iterable[str]:
+    """
+    Extract and parse text from a PDF file, filtering out unwanted content.
+
+    This function processes the PDF file at the given path, removing specified
+    bad words and stop words, and ensuring that the resulting chunks meet
+    a minimum word count.
+
+    Args:
+        path (str): The file path to the PDF document.
+        bad_words (Optional[List[str]]): A list of words that, if found,
+                                          will cause the chunk to be discarded.
+                                          Defaults to an empty list.
+        stop_words (Optional[List[str]]): A list of words to ignore in the word count.
+                                           Defaults to an empty list.
+        min_words (int): The minimum number of words a chunk must contain
+                         to be yielded. Defaults to 5.
+
+    Returns:
+        Iterable[str]: An iterable of cleaned text chunks extracted from the PDF.
+    """
     import textract
 
     # Default values for bad_words and stop_words

@@ -4,19 +4,28 @@ A collection of helpers to process raw documents
 
 ## Overview
 
-This library provides tools for chunking documents into manageable pieces such as paragraphs and sentences. It's particularly useful for preprocessing text data for natural language processing (NLP) tasks.
+This library provides tools for chunking documents into manageable pieces such as paragraphs and sentences. It's
+particularly useful for preprocessing text data for natural language processing (NLP) tasks.
 
 ### Supported Models
 
 ![img.png](img.png)
 
-- **SaT** &mdash; [Segment Any Text: A Universal Approach for Robust, Efficient and Adaptable Sentence Segmentation](https://arxiv.org/abs/2406.16678) by Markus Frohmann, Igor Sterner, Benjamin Minixhofer, Ivan Vulić and Markus Schedl (**state-of-the-art, encouraged**). - 85 languages
-- **WtP** &mdash; [Where’s the Point? Self-Supervised Multilingual Punctuation-Agnostic Sentence Segmentation](https://aclanthology.org/2023.acl-long.398/) by Benjamin Minixhofer, Jonas Pfeiffer and Ivan Vulić. - 85 languages
-- **PySBD** &mdash; [{P}y{SBD}: Pragmatic Sentence Boundary Disambiguation](https://arxiv.org/abs/2010.09657) by Nipun Sadvilkar and Mark Neumann  (rule-based, **lightweight**) - 22 languages
+- **SaT**
+  &mdash; [Segment Any Text: A Universal Approach for Robust, Efficient and Adaptable Sentence Segmentation](https://arxiv.org/abs/2406.16678)
+  by Markus Frohmann, Igor Sterner, Benjamin Minixhofer, Ivan Vulić and Markus Schedl (**state-of-the-art, encouraged
+  **). - 85 languages
+- **WtP**
+  &mdash; [Where’s the Point? Self-Supervised Multilingual Punctuation-Agnostic Sentence Segmentation](https://aclanthology.org/2023.acl-long.398/)
+  by Benjamin Minixhofer, Jonas Pfeiffer and Ivan Vulić. - 85 languages
+- **PySBD** &mdash; [{P}y{SBD}: Pragmatic Sentence Boundary Disambiguation](https://arxiv.org/abs/2010.09657) by Nipun
+  Sadvilkar and Mark Neumann  (rule-based, **lightweight**) - 22 languages
 
 ## Usage
 
-### Example: Using SaT for Sentence Segmentation
+### Text Segmenters
+
+#### Example: Using SaT for Sentence Segmentation
 
 ```python
 from ovos_document_chunkers import SaTSentenceSplitter
@@ -31,7 +40,7 @@ for sentence in sentences:
     print(sentence)
 ```
 
-### Example: Using WtP for Paragraph Segmentation
+#### Example: Using WtP for Paragraph Segmentation
 
 ```python
 from ovos_document_chunkers import WtPParagraphSplitter
@@ -46,7 +55,7 @@ for paragraph in paragraphs:
     print(paragraph)
 ```
 
-### Example: Using PySBD for Sentence Segmentation
+#### Example: Using PySBD for Sentence Segmentation
 
 ```python
 from ovos_document_chunkers import PySBDSentenceSplitter
@@ -61,10 +70,12 @@ for sentence in sentences:
     print(sentence)
 ```
 
-### Example using MarkdownSentenceSplitter
+### File Formats
+
+#### Example using MarkdownSentenceSplitter
 
 ```python
-from ovos_document_chunkers.text.markdown import MarkdownSentenceSplitter 
+from ovos_document_chunkers.text.markdown import MarkdownSentenceSplitter
 import requests
 
 markdown_text = requests.get("https://github.com/OpenVoiceOS/ovos-core/raw/dev/README.md").text
@@ -77,7 +88,8 @@ for sentence in sentences:
     print(sentence)
 ```
 
-### Example using MarkdownParagraphSplitter
+#### Example using MarkdownParagraphSplitter
+
 ```python
 from ovos_document_chunkers.text.markdown import MarkdownParagraphSplitter
 import requests
@@ -92,7 +104,7 @@ for paragraph in paragraphs:
     print(paragraph)
 ```
 
-### Example using HTMLSentenceSplitter
+#### Example using HTMLSentenceSplitter
 
 ```python
 from ovos_document_chunkers import HTMLSentenceSplitter
@@ -108,7 +120,7 @@ for sentence in sentences:
     print(sentence)
 ```
 
-### Example using HTMLParagraphSplitter
+#### Example using HTMLParagraphSplitter
 
 ```python
 from ovos_document_chunkers import HTMLParagraphSplitter
@@ -118,6 +130,21 @@ html_text = requests.get("https://www.gofundme.com/f/openvoiceos").text
 
 paragraph_splitter = HTMLParagraphSplitter()
 paragraphs = paragraph_splitter.chunk(html_text)
+
+print("\nParagraphs:")
+for paragraph in paragraphs:
+    print(paragraph)
+```
+
+#### Example using PDFParagraphSplitter
+
+```python
+from ovos_document_chunkers import PDFParagraphSplitter
+
+pdf_path = "/path/to/your/pdf/document.pdf"
+
+paragraph_splitter = PDFParagraphSplitter()
+paragraphs = paragraph_splitter.chunk(pdf_path)
 
 print("\nParagraphs:")
 for paragraph in paragraphs:
