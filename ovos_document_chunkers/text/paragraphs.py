@@ -1,9 +1,8 @@
 from typing import Iterable, Dict, Optional
 
-from quebra_frases import paragraph_tokenize
-
 from ovos_document_chunkers.base import AbstractTextDocumentChunker
 from ovos_document_chunkers.text.sentence import WtPSentenceSplitter, SaTSentenceSplitter
+from quebra_frases import paragraph_tokenize
 
 
 class RegexParagraphSplitter(AbstractTextDocumentChunker):

@@ -8,20 +8,19 @@ This library provides tools for chunking documents into manageable pieces such a
 particularly useful for preprocessing text data for natural language processing (NLP) tasks.
 
 - [Text Segmenters](#text-segmenters)
-  - [Supported Models](#supported-models)
-  - [Usage](#usage)
-    - [Example: Using SaT for Sentence Segmentation](#example-using-sat-for-sentence-segmentation)
-    - [Example: Using WtP for Paragraph Segmentation](#example-using-wtp-for-paragraph-segmentation)
-    - [Example: Using PySBD for Sentence Segmentation](#example-using-pysbd-for-sentence-segmentation)
+    - [Supported Models](#supported-models)
+    - [Usage](#usage)
+        - [Example: Using SaT for Sentence Segmentation](#example-using-sat-for-sentence-segmentation)
+        - [Example: Using WtP for Paragraph Segmentation](#example-using-wtp-for-paragraph-segmentation)
+        - [Example: Using PySBD for Sentence Segmentation](#example-using-pysbd-for-sentence-segmentation)
 - [File Formats](#file-formats)
-  - [Supported File Formats](#supported-file-formats)
-  - [Usage](#usage-1)
-    - [Example using MarkdownSentenceSplitter](#example-using-markdownsentencesplitter)
-    - [Example using MarkdownParagraphSplitter](#example-using-markdownparagraphsplitter)
-    - [Example using HTMLSentenceSplitter](#example-using-htmlsentencesplitter)
-    - [Example using HTMLParagraphSplitter](#example-using-htmlparagraphsplitter)
-    - [Example using PDFParagraphSplitter](#example-using-pdfparagraphsplitter)
-
+    - [Supported File Formats](#supported-file-formats)
+    - [Usage](#usage-1)
+        - [Example using MarkdownSentenceSplitter](#example-using-markdownsentencesplitter)
+        - [Example using MarkdownParagraphSplitter](#example-using-markdownparagraphsplitter)
+        - [Example using HTMLSentenceSplitter](#example-using-htmlsentencesplitter)
+        - [Example using HTMLParagraphSplitter](#example-using-htmlparagraphsplitter)
+        - [Example using PDFParagraphSplitter](#example-using-pdfparagraphsplitter)
 
 ## Text Segmenters
 
@@ -88,19 +87,18 @@ for sentence in sentences:
 
 ### Supported File Formats
 
-| Type     | Description                                                  | Class Name                | Expected Input                  | File Extension |
-|----------|--------------------------------------------------------------|---------------------------|---------------------------------|----------------|
-| Markdown | Splits Markdown text into sentences or paragraphs            | MarkdownSentenceSplitter  | String (Markdown text)          | .md            |
-|          |                                                              | MarkdownParagraphSplitter | String (Markdown text)          | .md            |
-| HTML     | Splits HTML text into sentences or paragraphs                | HTMLSentenceSplitter      | String (HTML text)              | .html, .htm    |
-|          |                                                              | HTMLParagraphSplitter     | String (HTML text)              | .html, .htm    |
-| PDF      | Splits PDF documents into sentences or paragraphs            | PDFSentenceSplitter       | String (File path to PDF file)  | .pdf           |
-|          |                                                              | PDFParagraphSplitter      | String (File path to PDF file)  | .pdf           |
-| doc      | Splits Microsoft doc documents into sentences or paragraphs  | DOCSentenceSplitter       | String (File path to doc file)  | .doc           |
-|          |                                                              | DOCParagraphSplitter      | String (File path to doc file)  | .doc           |
-| docx     | Splits Microsoft docx documents into sentences or paragraphs | DOCxSentenceSplitter      | String (File path to docx file) | .docx          |
-|          |                                                              | DOCxParagraphSplitter     | String (File path to docx file) | .docx          |
-
+| Type     | Description                                                  | Class Name                | Expected Input                      | File Extension |
+|----------|--------------------------------------------------------------|---------------------------|-------------------------------------|----------------|
+| Markdown | Splits Markdown text into sentences or paragraphs            | MarkdownSentenceSplitter  | String (url, path or Markdown text) | .md            |
+|          |                                                              | MarkdownParagraphSplitter | String (url, path or Markdown text) | .md            |
+| HTML     | Splits HTML text into sentences or paragraphs                | HTMLSentenceSplitter      | String (url, path or HTML text)     | .html          |
+|          |                                                              | HTMLParagraphSplitter     | String (url, path or HTML text)     | .html          |
+| PDF      | Splits PDF documents into sentences or paragraphs            | PDFSentenceSplitter       | String (url or path to PDF file)    | .pdf           |
+|          |                                                              | PDFParagraphSplitter      | String (url or path to PDF file)    | .pdf           |
+| doc      | Splits Microsoft doc documents into sentences or paragraphs  | DOCSentenceSplitter       | String (url or path to doc file)    | .doc           |
+|          |                                                              | DOCParagraphSplitter      | String (url or path to doc file)    | .doc           |
+| docx     | Splits Microsoft docx documents into sentences or paragraphs | DOCxSentenceSplitter      | String (url or path to docx file)   | .docx          |
+|          |                                                              | DOCxParagraphSplitter     | String (url or path to docx file)   | .docx          |
 
 ### Usage
 

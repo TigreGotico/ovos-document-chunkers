@@ -1,6 +1,7 @@
 import abc
 from typing import Iterable, Any, Dict
 
+
 # TODO - once mature consider moving to ovos-plugin-manager-templates
 
 

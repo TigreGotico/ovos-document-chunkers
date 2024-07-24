@@ -1,12 +1,14 @@
 from typing import Iterable, Optional, List, Dict
+
+import requests
 from ovos_document_chunkers.base import AbstractTextDocumentChunker
 
 
-class DOCSentenceSplitter(AbstractTextDocumentChunker):
+class PDFSentenceSplitter(AbstractTextDocumentChunker):
     """
-    A sentence splitter for Microsoft DOC documents.
+    A sentence splitter for PDF documents.
 
-    This splitter breaks down Microsoft DOC documents into sentences.
+    This splitter breaks down PDF documents into sentences.
 
     Attributes:
         config (Dict): Configuration dictionary for the splitter.
@@ -22,17 +24,17 @@ class DOCSentenceSplitter(AbstractTextDocumentChunker):
         """
         config = config or {}
         super().__init__(config)
-        self.splitter = DOCParagraphSplitter(self.config)
+        self.splitter = PDFParagraphSplitter(self.config)
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input DOC text into sentences.
+        Split the input PDF text into sentences.
 
         Args:
-            data (str): The DOC text to split.
+            data (str): The PDF text to split.
 
         Returns:
-            Iterable[str]: An iterable of sentences that are derived from the DOC text.
+            Iterable[str]: An iterable of sentences that are derived from the PDF text.
         """
         for chunk in self.splitter.chunk(data):
             for p in chunk.split("\n"):
@@ -40,11 +42,11 @@ class DOCSentenceSplitter(AbstractTextDocumentChunker):
                     yield p.strip()
 
 
-class DOCParagraphSplitter(AbstractTextDocumentChunker):
+class PDFParagraphSplitter(AbstractTextDocumentChunker):
     """
-    A paragraph splitter for Microsoft DOC documents.
+    A paragraph splitter for PDF documents.
 
-    This splitter breaks down Microsoft DOC documents into paragraphs.
+    This splitter breaks down PDF documents into paragraphs.
 
     Attributes:
         config (Dict): Configuration dictionary for the splitter.
@@ -63,31 +65,31 @@ class DOCParagraphSplitter(AbstractTextDocumentChunker):
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input DOC text into paragraphs.
+        Split the input PDF text into paragraphs.
 
         Args:
-            data (str): The DOC text to split.
+            data (str): The PDF text to split.
 
         Returns:
-            Iterable[str]: An iterable of paragraphs extracted from the DOC text.
+            Iterable[str]: An iterable of paragraphs extracted from the PDF text.
         """
-        for chunk in parse_doc(data):
+        for chunk in parse_pdf(data):
             yield chunk
 
 
-def parse_doc(path: str,
+def parse_pdf(path: str,
               bad_words: Optional[List[str]] = None,
               stop_words: Optional[List[str]] = None,
               min_words: int = 5) -> Iterable[str]:
     """
-    Extract and parse text from a Microsoft DOC file, filtering out unwanted content.
+    Extract and parse text from a PDF file, filtering out unwanted content.
 
-    This function processes the Microsoft DOC file at the given path, removing specified
+    This function processes the PDF file at the given path, removing specified
     bad words and stop words, and ensuring that the resulting chunks meet
     a minimum word count.
 
     Args:
-        path (str): The file path to the DOC document.
+        path (str): The file path to the PDF document.
         bad_words (Optional[List[str]]): A list of words that, if found,
                                           will cause the chunk to be discarded.
                                           Defaults to an empty list.
@@ -97,8 +99,10 @@ def parse_doc(path: str,
                          to be yielded. Defaults to 5.
 
     Returns:
-        Iterable[str]: An iterable of cleaned text chunks extracted from the DOC.
+        Iterable[str]: An iterable of cleaned text chunks extracted from the PDF.
     """
+    if path.startswith("http"):
+        path = requests.get(path).text
     import textract
 
     # Default values for bad_words and stop_words
@@ -106,7 +110,7 @@ def parse_doc(path: str,
     # ignore in word count
     stop_words = stop_words or []
 
-    text = textract.process(path, extension='doc', encoding='utf-8').decode("utf-8")
+    text = textract.process(path, extension='pdf', encoding='utf-8').decode("utf-8")
 
     for chunk in text.split("\n\n"):
         words = [w for w in chunk.split() if w.lower() not in stop_words and len(w) > 3]
@@ -119,12 +123,12 @@ def parse_doc(path: str,
 
 
 if __name__ == "__main__":
-    doc_path = "/home/miro/PycharmProjects/TigreWorkspace/ovos-document-chunkers/200864222055.doc"
+    pdf_path = "/ovos-document-chunkers/The Complete Works of H.P. Lovecraft.pdf"
 
-    chunker = DOCParagraphSplitter()
-    chunker = DOCSentenceSplitter()
+    chunker = PDFParagraphSplitter()
+    # chunker = PDFSentenceSplitter()
 
     i = 0
-    for chunk in chunker.chunk(doc_path):
+    for chunk in chunker.chunk(pdf_path):
         print("### chunk:", i, chunk.replace("\n", "  "))
         i += 1

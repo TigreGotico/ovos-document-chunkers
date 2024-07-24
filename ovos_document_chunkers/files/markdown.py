@@ -1,3 +1,4 @@
+import os.path
 from typing import Iterable, Tuple, Dict, Optional
 
 from ovos_document_chunkers.base import AbstractTextDocumentChunker
@@ -74,6 +75,11 @@ class MarkdownParagraphSplitter(AbstractTextDocumentChunker):
         Returns:
             Iterable[str]: An iterable of paragraphs.
         """
+        if data.startswith("http"):
+            data = requests.get(data).text
+        if os.path.isfile(data) and data.endswith(".md"):
+            with open(data) as f:
+                data = f.read()
         import markdown_to_json
         raw = markdown_to_json.dictify(data)
 
@@ -148,11 +154,10 @@ def _parse_txt(k: str, d: str) -> Iterable[Tuple[str, str]]:
         yield k, chunk
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     import requests
-    value = requests.get("https://github.com/OpenVoiceOS/ovos-core/raw/dev/README.md").text
 
     chunker = MarkdownSentenceSplitter()
     chunker = MarkdownParagraphSplitter()
-    for chunk in chunker.chunk(value):
+    for chunk in chunker.chunk("https://github.com/OpenVoiceOS/ovos-core/raw/dev/README.md"):
         print(chunk)
