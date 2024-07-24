@@ -1,4 +1,6 @@
 from typing import Iterable, Optional, List, Dict
+
+import requests
 from ovos_document_chunkers.base import AbstractTextDocumentChunker
 
 
@@ -76,9 +78,9 @@ class DOCxParagraphSplitter(AbstractTextDocumentChunker):
 
 
 def parse_docx(path: str,
-              bad_words: Optional[List[str]] = None,
-              stop_words: Optional[List[str]] = None,
-              min_words: int = 5) -> Iterable[str]:
+               bad_words: Optional[List[str]] = None,
+               stop_words: Optional[List[str]] = None,
+               min_words: int = 5) -> Iterable[str]:
     """
     Extract and parse text from a Microsoft docx file, filtering out unwanted content.
 
@@ -99,6 +101,10 @@ def parse_docx(path: str,
     Returns:
         Iterable[str]: An iterable of cleaned text chunks extracted from the DOC.
     """
+    if path.startswith("http"):
+        response = requests.get(path)
+        response.raise_for_status()  # Raise an error for bad status codes
+        path = response.text
     import textract
 
     # Default values for bad_words and stop_words
@@ -119,7 +125,7 @@ def parse_docx(path: str,
 
 
 if __name__ == "__main__":
-    doc_path = "/home/miro/PycharmProjects/TigreWorkspace/ovos-document-chunkers/ngi.docx"
+    doc_path = "/ovos-document-chunkers/ngi.docx"
 
     chunker = DOCxParagraphSplitter()
     chunker = DOCxSentenceSplitter()

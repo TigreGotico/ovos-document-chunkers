@@ -1,6 +1,8 @@
-from typing import Iterable, Dict, Optional, List, Any
+import os
 import re
+from typing import Iterable, Dict, Optional, List, Any
 
+import requests
 from ovos_document_chunkers.base import AbstractTextDocumentChunker
 from quebra_frases import sentence_tokenize
 
@@ -99,6 +101,15 @@ def denoise_html(html_content: str,
     Returns:
         List[str]: The cleaned text content with only the allowed HTML tags.
     """
+    if html_content.startswith("http"):
+        response = requests.get(html_content)
+        response.raise_for_status()  # Raise an error for bad status codes
+        html_content = response.text
+
+    if os.path.isfile(html_content) and html_content.endswith(".html"):
+        with open(html_content) as f:
+            html_content = f.read()
+
     # Default values for bad_words and stop_words
     bad_words = bad_words or ["cookie"]
     # ignore in word count
@@ -110,7 +121,8 @@ def denoise_html(html_content: str,
 
     # Remove unwanted tags, keeping <div>, <h1> to <h6>, <p>, <br>
     clean_tags = re.compile(r'</?(div|h[1-6]|p|br)\b[^>]*>', re.IGNORECASE)
-    cleaned_html = re.sub(r'</?[^>]*>', lambda m: m.group(0) if clean_tags.match(m.group(0)) else '', html_content, flags=re.IGNORECASE | re.DOTALL)
+    cleaned_html = re.sub(r'</?[^>]*>', lambda m: m.group(0) if clean_tags.match(m.group(0)) else '', html_content,
+                          flags=re.IGNORECASE | re.DOTALL)
 
     # Remove attributes from allowed tags
     tag_cleaner = re.compile(r'<(/?\w+)([^>]*)>', re.IGNORECASE)
@@ -148,18 +160,16 @@ def denoise_html(html_content: str,
 
 
 if __name__ == "__main__":
-    import requests
-    value = requests.get("https://www.gofundme.com/f/openvoiceos").text
 
     # Example usage of HTMLParagraphSplitter
     paragraph_splitter = HTMLParagraphSplitter()
-    paragraphs = list(paragraph_splitter.chunk(value))
+    paragraphs = list(paragraph_splitter.chunk("https://www.gofundme.com/f/openvoiceos"))
     print(f"Number of paragraphs: {len(paragraphs)}")
     # Number of paragraphs: 30
 
     # Example usage of HTMLSentenceSplitter
     sentence_splitter = HTMLSentenceSplitter()
-    sentences = list(sentence_splitter.chunk(value))
+    sentences = list(sentence_splitter.chunk("https://www.gofundme.com/f/openvoiceos"))
     print(f"Number of sentences: {len(sentences)}")
     # Number of sentences: 55
 
