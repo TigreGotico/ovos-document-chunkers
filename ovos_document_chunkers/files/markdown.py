@@ -76,7 +76,9 @@ class MarkdownParagraphSplitter(AbstractTextDocumentChunker):
             Iterable[str]: An iterable of paragraphs.
         """
         if data.startswith("http"):
-            data = requests.get(data).text
+            response = requests.get(data)
+            response.raise_for_status()  # Raise an error for bad status codes
+            data = response.text
         if os.path.isfile(data) and data.endswith(".md"):
             with open(data) as f:
                 data = f.read()
