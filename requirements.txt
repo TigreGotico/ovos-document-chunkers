@@ -2,3 +2,4 @@ quebra-frases
 markdown-to-json
 pysbd
 wtpsplit
+textract

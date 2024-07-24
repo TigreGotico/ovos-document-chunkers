@@ -2,6 +2,7 @@ from ovos_document_chunkers.text.paragraphs import SaTParagraphSplitter, WtPPara
 from ovos_document_chunkers.text.sentence import PySBDSentenceSplitter, SaTSentenceSplitter, WtPSentenceSplitter, RegexSentenceSplitter
 from ovos_document_chunkers.text.markdown import MarkdownSentenceSplitter, MarkdownParagraphSplitter
 from ovos_document_chunkers.text.webpages import HTMLSentenceSplitter, HTMLParagraphSplitter
+from ovos_document_chunkers.text.pdf import PDFSentenceSplitter, PDFParagraphSplitter
 
 
 __all__ = [
@@ -13,5 +14,7 @@ __all__ = [
     "WtPSentenceSplitter",
     "RegexSentenceSplitter",
     "MarkdownSentenceSplitter",
-    "MarkdownParagraphSplitter"
+    "MarkdownParagraphSplitter",
+    "PDFSentenceSplitter",
+    "PDFParagraphSplitter"
 ]
