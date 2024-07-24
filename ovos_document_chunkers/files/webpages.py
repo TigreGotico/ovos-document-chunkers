@@ -102,7 +102,9 @@ def denoise_html(html_content: str,
         List[str]: The cleaned text content with only the allowed HTML tags.
     """
     if html_content.startswith("http"):
-        html_content = requests.get(html_content).text
+        response = requests.get(html_content)
+        response.raise_for_status()  # Raise an error for bad status codes
+        html_content = response.text
 
     if os.path.isfile(html_content) and html_content.endswith(".html"):
         with open(html_content) as f:
