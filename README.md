@@ -180,3 +180,9 @@ print("\nParagraphs:")
 for paragraph in paragraphs:
     print(paragraph)
 ```
+
+## Credits
+
+![image](https://github.com/user-attachments/assets/809588a2-32a2-406c-98c0-f88bf7753cb4)
+
+> This work was sponsored by VisioLab, part of [Royal Dutch Visio](https://visio.org/), is the test, education, and research center in the field of (innovative) assistive technology for blind and visually impaired people and professionals. We explore (new) technological developments such as Voice, VR and AI and make the knowledge and expertise we gain available to everyone.
