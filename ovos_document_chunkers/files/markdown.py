@@ -1,6 +1,6 @@
 import os.path
 from typing import Iterable, Tuple, Dict, Optional
-
+import requests
 from ovos_document_chunkers.base import AbstractTextDocumentChunker
 
 
@@ -153,7 +153,14 @@ def _parse_txt(k: str, d: str) -> Iterable[Tuple[str, str]]:
         Iterable[Tuple[str, str]]: An iterable of key-chunk pairs.
     """
     for chunk in [d.strip()]:
-        yield k, chunk
+        if "</details>" in chunk:
+            for c in chunk.split("</details>"):
+                for c2 in c.split("<details>"):
+                    c2 = c2.replace("[", "").replace("]", "").strip()
+                    if c2:
+                        yield k, c2
+            continue
+        yield k, chunk.replace("[", "").replace("]", "").strip()
 
 
 if __name__ == "__main__":
