@@ -28,18 +28,21 @@ class RegexParagraphSplitter(AbstractTextDocumentChunker):
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input text into paragraphs.
-
-        Args:
-            data (str): The text to split.
-
+        Split input text into paragraphs using double newlines and paragraph tokenization.
+        
+        Each non-empty block separated by double newlines is further tokenized into paragraphs using `paragraph_tokenize`. If tokenization fails for a block, the original block is yielded as a paragraph.
+        
         Returns:
-            Iterable[str]: An iterable of paragraphs.
+            An iterable of paragraph strings.
         """
         for c in data.split("\n\n"):
-            for p in paragraph_tokenize(c):
-                yield p
-
+            if not c.strip():
+                continue
+            try:
+                for p in paragraph_tokenize(c):
+                    yield p
+            except:
+                yield c
 
 class WtPParagraphSplitter(WtPSentenceSplitter):
     """
@@ -50,15 +53,16 @@ class WtPParagraphSplitter(WtPSentenceSplitter):
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input text into paragraphs using WtP.
-
-        Args:
-            data (str): The text to split.
-
-        Returns:
-            Iterable[str]: An iterable of paragraphs.
+        Split the input text into paragraphs using the WtP splitter.
+        
+        Yields each paragraph as a separate string. Handles cases where the splitter returns nested lists by flattening them into a single iterable of paragraphs.
         """
-        yield from self.splitter.split(data, do_paragraph_segmentation=True)
+        for chunk in self.splitter.split(data, do_paragraph_segmentation=True):
+            if isinstance(chunk, list):
+                for c in chunk:
+                    yield c
+            else:
+                yield chunk
 
 
 class SaTParagraphSplitter(SaTSentenceSplitter):
