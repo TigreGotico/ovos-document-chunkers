@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2a2](https://github.com/TigreGotico/ovos-document-chunkers/tree/0.1.2a2) (2025-12-18)
+
+[Full Changelog](https://github.com/TigreGotico/ovos-document-chunkers/compare/0.1.2a1...0.1.2a2)
+
+**Merged pull requests:**
+
+- chore: Configure Renovate [\#12](https://github.com/TigreGotico/ovos-document-chunkers/pull/12) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.1.2a1](https://github.com/TigreGotico/ovos-document-chunkers/tree/0.1.2a1) (2025-07-18)
 
 [Full Changelog](https://github.com/TigreGotico/ovos-document-chunkers/compare/0.1.1...0.1.2a1)
