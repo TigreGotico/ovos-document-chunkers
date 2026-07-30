@@ -1,11 +1,6 @@
 # Document Chunkers
 
-A collection of helpers to process raw documents
-
-## Overview
-
-This library provides tools for chunking documents into manageable pieces such as paragraphs and sentences. It's
-particularly useful for preprocessing text data for natural language processing (NLP) tasks.
+Document Chunkers is a Python library that splits raw documents into sentences or paragraphs. Use it to prepare text for natural language processing (NLP) tasks. The library reads plain text, Markdown, HTML, PDF, DOC, and DOCX input.
 
 - [Text Segmenters](#text-segmenters)
     - [Supported Models](#supported-models)
@@ -22,19 +17,21 @@ particularly useful for preprocessing text data for natural language processing 
         - [Example using HTMLParagraphSplitter](#example-using-htmlparagraphsplitter)
         - [Example using PDFParagraphSplitter](#example-using-pdfparagraphsplitter)
 
+## Install
+
+```bash
+pip install ovos-document-chunkers
+```
+
 ## Text Segmenters
 
 ![img.png](img.png)
 
-- **SaT**
-  &mdash; [Segment Any Text: A Universal Approach for Robust, Efficient and Adaptable Sentence Segmentation](https://arxiv.org/abs/2406.16678)
-  by Markus Frohmann, Igor Sterner, Benjamin Minixhofer, Ivan Vulić and Markus Schedl (**state-of-the-art, encouraged
-  **). - 85 languages
-- **WtP**
-  &mdash; [Where’s the Point? Self-Supervised Multilingual Punctuation-Agnostic Sentence Segmentation](https://aclanthology.org/2023.acl-long.398/)
-  by Benjamin Minixhofer, Jonas Pfeiffer and Ivan Vulić. - 85 languages
-- **PySBD** &mdash; [{P}y{SBD}: Pragmatic Sentence Boundary Disambiguation](https://arxiv.org/abs/2010.09657) by Nipun
-  Sadvilkar and Mark Neumann  (rule-based, **lightweight**) - 22 languages
+A text segmenter splits plain text into sentences or paragraphs. This library wraps three segmentation models.
+
+- **SaT** &mdash; [Segment Any Text](https://arxiv.org/abs/2406.16678) by Markus Frohmann, Igor Sterner, Benjamin Minixhofer, Ivan Vulić, and Markus Schedl. Covers 85 languages.
+- **WtP** &mdash; [Where's the Point? Self-Supervised Multilingual Punctuation-Agnostic Sentence Segmentation](https://aclanthology.org/2023.acl-long.398/) by Benjamin Minixhofer, Jonas Pfeiffer, and Ivan Vulić. Covers 85 languages.
+- **PySBD** &mdash; [{P}y{SBD}: Pragmatic Sentence Boundary Disambiguation](https://arxiv.org/abs/2010.09657) by Nipun Sadvilkar and Mark Neumann. A rule-based, lightweight model that covers 22 languages.
 
 ### Usage
 
@@ -85,20 +82,22 @@ for sentence in sentences:
 
 ## File Formats
 
+A file splitter reads a document in a given file format, then splits its text into sentences or paragraphs. Each splitter accepts a URL, a local path, or the raw file text.
+
 ### Supported File Formats
 
 | Type     | Description                                                  | Class Name                | Expected Input                      | File Extension |
-|----------|--------------------------------------------------------------|---------------------------|-------------------------------------|----------------|
-| Markdown | Splits Markdown text into sentences or paragraphs            | MarkdownSentenceSplitter  | String (url, path or Markdown text) | .md            |
-|          |                                                              | MarkdownParagraphSplitter | String (url, path or Markdown text) | .md            |
-| HTML     | Splits HTML text into sentences or paragraphs                | HTMLSentenceSplitter      | String (url, path or HTML text)     | .html          |
-|          |                                                              | HTMLParagraphSplitter     | String (url, path or HTML text)     | .html          |
-| PDF      | Splits PDF documents into sentences or paragraphs            | PDFSentenceSplitter       | String (url or path to PDF file)    | .pdf           |
-|          |                                                              | PDFParagraphSplitter      | String (url or path to PDF file)    | .pdf           |
-| doc      | Splits Microsoft doc documents into sentences or paragraphs  | DOCSentenceSplitter       | String (url or path to doc file)    | .doc           |
-|          |                                                              | DOCParagraphSplitter      | String (url or path to doc file)    | .doc           |
-| docx     | Splits Microsoft docx documents into sentences or paragraphs | DOCxSentenceSplitter      | String (url or path to docx file)   | .docx          |
-|          |                                                              | DOCxParagraphSplitter     | String (url or path to docx file)   | .docx          |
+|----------|----------------------------------------------------------------|---------------------------|--------------------------------------|-----------------|
+| Markdown | Splits Markdown text into sentences or paragraphs             | MarkdownSentenceSplitter  | String (url, path or Markdown text) | .md             |
+|          |                                                                  | MarkdownParagraphSplitter | String (url, path or Markdown text) | .md             |
+| HTML     | Splits HTML text into sentences or paragraphs                 | HTMLSentenceSplitter      | String (url, path or HTML text)     | .html           |
+|          |                                                                  | HTMLParagraphSplitter     | String (url, path or HTML text)     | .html           |
+| PDF      | Splits PDF documents into sentences or paragraphs              | PDFSentenceSplitter       | String (url or path to PDF file)    | .pdf            |
+|          |                                                                  | PDFParagraphSplitter      | String (url or path to PDF file)    | .pdf            |
+| doc      | Splits Microsoft doc documents into sentences or paragraphs    | DOCSentenceSplitter       | String (url or path to doc file)    | .doc            |
+|          |                                                                  | DOCParagraphSplitter      | String (url or path to doc file)    | .doc            |
+| docx     | Splits Microsoft docx documents into sentences or paragraphs   | DOCxSentenceSplitter      | String (url or path to docx file)   | .docx           |
+|          |                                                                  | DOCxParagraphSplitter     | String (url or path to docx file)   | .docx           |
 
 ### Usage
 
@@ -180,6 +179,10 @@ print("\nParagraphs:")
 for paragraph in paragraphs:
     print(paragraph)
 ```
+
+## Related Projects
+
+- [OpenVoiceOS/ovos-rag-solver](https://github.com/TigreGotico/ovos-rag-solver) &mdash; a retrieval-augmented generation solver that consumes chunked documents.
 
 ## Credits
 
