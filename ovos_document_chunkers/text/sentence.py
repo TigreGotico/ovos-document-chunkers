@@ -27,19 +27,27 @@ class RegexSentenceSplitter(AbstractTextDocumentChunker):
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input text into sentences.
-
-        Args:
-            data (str): The text to split.
-
+        Splits input text into sentences using paragraph and sentence tokenization, with fallbacks for tokenization errors.
+        
+        Empty lines and paragraphs are skipped. If sentence tokenization fails for a paragraph, the paragraph is yielded as a single chunk. If paragraph tokenization fails for a line, the original line is yielded.
+         
         Returns:
-            Iterable[str]: An iterable of sentences.
+            An iterable of sentences or larger text chunks if tokenization fails.
         """
         for c in data.split("\n"):
-            for p in paragraph_tokenize(c):
-                for s in sentence_tokenize(p):
-                    yield s
-
+            if not c.strip():
+                continue
+            try:
+                for p in paragraph_tokenize(c):
+                    if not p.strip():
+                        continue
+                    try:
+                        for s in sentence_tokenize(p):
+                            yield s
+                    except:
+                        yield p
+            except:
+                yield c
 
 class PySBDSentenceSplitter(AbstractTextDocumentChunker):
     """
@@ -100,13 +108,11 @@ class SaTSentenceSplitter(AbstractTextDocumentChunker):
         "sat-12l-lora"
     ]
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: Optional[Dict] = None, splitter = None):
         """
-        Initialize the splitter with a configuration.
-
-        Args:
-            config (Optional[Dict]): Configuration dictionary for the splitter.
-                                     Defaults to {"model": "sat-3l-sm"} if None.
+        Initializes a SaTSentenceSplitter with the specified configuration and optional pre-initialized splitter.
+        
+        If a splitter instance is provided, it is used directly; otherwise, a new SaT model is initialized according to the configuration. If `use_cuda` is set in the configuration, the model is moved to CUDA and converted to half precision.
         """
         config = config or {"model": "sat-3l-sm"}
         super().__init__(config)
@@ -115,19 +121,18 @@ class SaTSentenceSplitter(AbstractTextDocumentChunker):
         assert self.model in self.VALID_MODELS
 
         cuda = self.config.get("use_cuda")
-        self.splitter = SaT(self.model)
-        if cuda:
-            self.splitter.half().to("cuda")
+        if splitter:
+            self.splitter = splitter
+        else:
+            self.splitter = SaT(self.model)
+            if cuda:
+                self.splitter.half().to("cuda")
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input text into sentences using SaT.
-
-        Args:
-            data (str): The text to split.
-
-        Returns:
-            Iterable[str]: An iterable of sentences.
+        Split the input text into sentences using the SaT model.
+        
+        Yields each sentence detected in the input text as a separate string.
         """
         yield from self.splitter.split(data, do_paragraph_segmentation=False)
 
@@ -157,36 +162,38 @@ class WtPSentenceSplitter(AbstractTextDocumentChunker):
         "wtp-canine-s-12l-no-adapters"
     ]
 
-    def __init__(self, config: Optional[Dict] = None):
+    def __init__(self, config: Optional[Dict] = None, splitter = None):
         """
-        Initialize the splitter with a configuration.
-
-        Args:
-            config (Optional[Dict]): Configuration dictionary for the splitter.
-                                     Defaults to {"model": "wtp-bert-mini"} if None.
+        Initializes the WtPSentenceSplitter with the specified configuration and optional pre-initialized splitter.
+        
+        If a splitter instance is provided, it is used directly; otherwise, a new WtP model is initialized according to the configuration. Supports both ONNX and PyTorch backends, with optional CUDA acceleration.
         """
         config = config or {"model": "wtp-bert-mini"}
         super().__init__(config)
-        from wtpsplit import WtP
         self.model = self.config["model"]
         assert self.model in self.VALID_MODELS
 
+        from wtpsplit import WtP
         cuda = self.config.get("use_cuda")
-        if "bert" in self.model and self.config.get("use_onnx", True):  # use onnxruntime
-            self.splitter = WtP(self.model, ort_providers=['CUDAExecutionProvider' if cuda else 'CPUExecutionProvider'])
-        else:  # pytorch needed
-            self.splitter = WtP(self.model)
-            if cuda:
-                self.splitter.half().to("cuda")
+        if splitter:
+            self.splitter = splitter
+        else:
+            if "bert" in self.model and self.config.get("use_onnx", True):  # use onnxruntime
+                self.splitter = WtP(self.model, ort_providers=['CUDAExecutionProvider' if cuda else 'CPUExecutionProvider'])
+            else:  # pytorch needed
+                self.splitter = WtP(self.model)
+                if cuda:
+                    self.splitter.half().to("cuda")
 
     def chunk(self, data: str) -> Iterable[str]:
         """
-        Split the input text into sentences using WtP.
-
-        Args:
-            data (str): The text to split.
-
-        Returns:
-            Iterable[str]: An iterable of sentences.
+        Split input text into sentences using the WtP model.
+        
+        Yields each detected sentence as a separate string. If the splitter returns a list of sentences, each element is yielded individually; otherwise, the chunk is yielded directly.
         """
-        yield from self.splitter.split(data, do_paragraph_segmentation=False)
+        for chunk in self.splitter.split(data, do_paragraph_segmentation=False):
+            if isinstance(chunk, list):
+                for c in chunk:
+                    yield c
+            else:
+                yield chunk
