@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2a5](https://github.com/TigreGotico/ovos-document-chunkers/tree/0.1.2a5) (2026-07-30)
+
+[Full Changelog](https://github.com/TigreGotico/ovos-document-chunkers/compare/0.1.2a2...0.1.2a5)
+
+**Merged pull requests:**
+
+- docs: rewrite README in Simplified Technical English [\#20](https://github.com/TigreGotico/ovos-document-chunkers/pull/20) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.1.2a2](https://github.com/TigreGotico/ovos-document-chunkers/tree/0.1.2a2) (2025-12-18)
 
 [Full Changelog](https://github.com/TigreGotico/ovos-document-chunkers/compare/0.1.2a1...0.1.2a2)
